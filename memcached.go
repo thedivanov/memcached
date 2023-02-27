@@ -48,7 +48,6 @@ func (c *Conn) Get(key string) (Item, error) {
 	var item Item
 
 	for scanner.Scan() {
-		fmt.Println("line: ", scanner.Text())
 		if bytes.Equal(scanner.Bytes(), resultEnd) {
 			break
 		} else if bytes.Count(scanner.Bytes(), []byte(" ")) == 3 {
