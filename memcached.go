@@ -35,7 +35,13 @@ type Item struct {
 }
 
 func (c *Conn) Set(key string, val string, expire int64) error {
-	_, err := c.conn.Write([]byte(fmt.Sprintf("set %s 0 %f %d%s%s%s", key, time.Unix(expire, 0).Sub(time.Now()).Seconds(), len(val), crlf, val, crlf)))
+	var exp int
+	if expire == 0 {
+		exp = 0
+	} else {
+		exp = int(time.Unix(expire, 0).Sub(time.Now()).Seconds())
+	}
+	_, err := c.conn.Write([]byte(fmt.Sprintf("set %s 0 %d %d%s%s%s", key, exp, len(val), crlf, val, crlf)))
 	return err
 }
 
